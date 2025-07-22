@@ -2,30 +2,34 @@ import {useContext, useState} from "react";
 import {AuthContext} from "../../context/auth/AuthContext.jsx";
 import api from "../../helpers/api/api.js";
 import {Link, useNavigate} from "react-router-dom";
-import './LoginPage.css';
+import './Login.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
 
-function LoginPage() {
+function Login() {
     const auth = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-
     const navigate = useNavigate();
 
     async function handleLogin(event) {
         event.preventDefault();
         setIsLoading(true);
         setError('');
+        setMessage('');
 
         try {
             const response = await api.auth.login(username, password);
             auth.login(response);
-            navigate('/');
+            setMessage('Login successful! Redirecting...');
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
         } catch (e) {
             console.error("Error during signing in:", e);
-            setError('Invalid username or password');
+            setError('Login failed. Please check your username and password.');
         } finally {
             setIsLoading(false);
         }
@@ -40,8 +44,9 @@ function LoginPage() {
                 <p>Don't have an account yet? <Link to="/signup">Sign up!</Link></p>
                 <form onSubmit={handleLogin} className="login-form">
                     {error && <div className="error">{error}</div>}
+                    {message && <div className="success">{message}</div>}
+
                     <div className="form-group">
-                        <label htmlFor="username"></label>
                         <input
                             type="text"
                             id="username"
@@ -52,7 +57,6 @@ function LoginPage() {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="password"></label>
                         <input
                             type="password"
                             id="password"
@@ -72,4 +76,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default Login;

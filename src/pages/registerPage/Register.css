@@ -1,4 +1,4 @@
-.login-page {
+.register-page {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     margin: 0;
 }
 
-.login-container {
+.register-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,32 +18,32 @@
     text-align: center;
 }
 
-.login-page .logo-container {
+.register-page .logo-container {
     width: 8rem;
     height: 8rem;
 }
 
-.login-page .logo-container img {
+.register-page .logo-container img {
     width: 100%;
     border-radius: 50%;
 }
 
-.login-container p {
+.register-container p {
     font-size: 1.2rem;
     margin-bottom: 20px;
     color: #f1f1f1;
 }
 
-.login-container p a {
+.register-container p a {
     color: #007bff;
     text-decoration: none;
 }
 
-.login-container p a:hover {
+.register-container p a:hover {
     text-decoration: underline;
 }
 
-.login-form {
+.register-form {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -69,7 +69,7 @@
     color: #333;
 }
 
-.login-btn {
+.register-btn {
     width: 50%;
     align-self: center;
 }
