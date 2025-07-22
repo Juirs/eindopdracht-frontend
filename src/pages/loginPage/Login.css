@@ -73,17 +73,3 @@
     width: 50%;
     align-self: center;
 }
-
-.forgot-password-link {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-}
-
-.forgot-password-link a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.forgot-password-link a:hover {
-    text-decoration: underline;
-}
