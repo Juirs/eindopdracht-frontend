@@ -5,17 +5,28 @@
 }
 
 body {
-    font-size: 1.2rem;
+    font-size: 16px;
     color: white;
-    background-color: #212121;
     background-image: url('./assets/background.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+}
+
+.app-layout {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
+.main-container {
+    display: flex;
+    flex: 1;
+    padding: 0.5rem 0;
+}
+
+.content {
+    flex: 1;
+}
 
 button + button {
     margin: 0 8px;
