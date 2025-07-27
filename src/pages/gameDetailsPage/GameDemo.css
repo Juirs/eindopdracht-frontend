@@ -1,0 +1,478 @@
+.game-demo-page {
+    padding: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.game-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(136, 0, 255, 0.3);
+    padding-bottom: 1rem;
+}
+
+.game-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.game-rating {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stars {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.star {
+    font-size: 1.2rem;
+}
+
+.star.full {
+    color: #ffd700;
+}
+
+.star.empty {
+    color: #666;
+}
+
+.star.clickable {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star.clickable:hover {
+    color: #ffd700;
+}
+
+.rating-text {
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.game-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+}
+
+.left-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.media-section {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(136, 0, 255, 0.2);
+}
+
+.main-media {
+    width: 100%;
+    height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.main-media iframe,
+.main-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+}
+
+.media-thumbnails {
+    display: flex;
+}
+
+.thumbnail {
+    flex: 0 0 16.7%;
+    height: 120px;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 4px solid black;
+    transition: all 0.3s ease;
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.thumbnail:hover {
+    border-color: rgba(136, 0, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.thumbnail.active {
+    border-color: #8800ff;
+}
+
+.thumbnail.trailer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-icon {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.thumbnail.screenshot img,
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-section {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.about-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #8800ff;
+    padding-bottom: 0.5rem;
+}
+
+.reviews-section {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid rgba(136, 0, 255, 0.1);
+}
+
+.reviews-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #8800ff;
+    padding-bottom: 0.5rem;
+}
+
+.review-form-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.review-form-container h3 {
+    margin-bottom: 1rem;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.2rem;
+    margin-bottom: 1rem;
+}
+
+.comment-input {
+    margin-bottom: 1rem;
+}
+
+.comment-input label {
+    display: block;
+    color: #ccc;
+    margin-bottom: 0.5rem;
+}
+
+.comment-input textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(136, 0, 255, 0.3);
+    border-radius: 4px;
+    padding: 0.75rem;
+    color: #fff;
+    resize: vertical;
+}
+
+.comment-input textarea:focus {
+    outline: none;
+    border-color: #8800ff;
+}
+
+.submit-review-btn {
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-review-btn:hover {
+    background: linear-gradient(135deg, #9911ff, #7700dd);
+    transform: translateY(-1px);
+}
+
+.submit-review-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+}
+
+.review-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.developer-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.developer-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-content {
+    color: #ccc;
+    margin: 1rem 0;
+}
+
+.review-meta {
+    margin-top: 0.8rem;
+}
+
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vote-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.vote-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ccc;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.vote-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.vote-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.upvote-btn.voted {
+    background: rgba(76, 175, 80, 0.3);
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.upvote-btn.voted:hover {
+    background: rgba(76, 175, 80, 0.4);
+}
+
+.downvote-btn.voted {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: #f44336;
+    color: #f44336;
+}
+
+.downvote-btn.voted:hover {
+    background: rgba(244, 67, 54, 0.4);
+}
+
+.delete-review-btn {
+    background: rgba(255, 68, 68, 0.2);
+    border: 1px solid rgba(255, 68, 68, 0.4);
+    color: #ff6b6b;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.delete-review-btn:hover {
+    background: rgba(255, 68, 68, 0.3);
+    border-color: rgba(255, 68, 68, 0.6);
+    transform: translateY(-1px);
+}
+
+.review-votes {
+    color: #999;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.no-reviews {
+    color: #999;
+    text-align: center;
+    padding: 2rem;
+}
+
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.download-section {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.download-section .download-btn {
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(136, 0, 255, 0.4);
+}
+
+.download-btn.disabled {
+    background: rgba(100, 100, 100, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+}
+
+.download-btn.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.download-icon {
+    font-size: 1.2rem;
+}
+
+.game-details-section,
+.developer-section,
+.category-section {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(136, 0, 255, 0.1);
+}
+
+.game-details-section h3,
+.developer-section h3,
+.category-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(136, 0, 255, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item span:first-child {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.developer-name {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.developer-bio {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.developer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
