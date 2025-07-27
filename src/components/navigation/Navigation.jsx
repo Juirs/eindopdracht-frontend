@@ -1,8 +1,9 @@
 import {useContext, useState} from "react";
-import {AuthContext} from "../../context/auth/AuthContext.jsx";
+import {AuthContext} from "../../context/AuthContext.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import logo from '../../assets/indieverse-logo.jpg';
+import logo from '../../assets/indieVerse_Logo_Transparent.png';
 import userAvatar from '../../assets/user-placeholder.png';
+import api from "../../helpers/api.js";
 import './Navigation.css';
 
 function Navigation() {
@@ -10,18 +11,29 @@ function Navigation() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
 
+    const getUserAvatarUrl = () => {
+        if (auth.user?.avatar) {
+            return api.profiles.getUserAvatarUrl(auth.user.username);
+        }
+        return userAvatar;
+    };
+
     const handleSearch = (e) => {
-        // will handle this later
+        if (e.key === 'Enter' && searchQuery.trim()) {
+            navigate(`/browse?search=${encodeURIComponent(searchQuery.trim())}`);
+        }
     };
 
     return (<nav>
         <Link to="/" className="logo-link">
-                <span className="logo-container">
-                    <img src={logo} alt="logo"/>
+                <div className="logo-container">
+                    <span className="logo-image">
+                        <img src={logo} alt="logo"/>
+                    </span>
                     <h3>
                         IndieVerse
                     </h3>
-                </span>
+                </div>
         </Link>
 
         <div className="search-container">
@@ -37,16 +49,15 @@ function Navigation() {
             {auth.isAuthenticated ? <>
                 <div className="user-avatar">
                     <img
-                        src={auth.user?.avatar || userAvatar}
+                        src={getUserAvatarUrl()}
                         alt="User Avatar"
                     />
                 </div>
-                <Link to={auth.user?.username} className="username-email">
+                <Link to="/profile" className="username-email">
                     <p>{auth.user?.username}</p>
                     <p>{auth.user?.email}</p>
                 </Link>
 
-                {/*For testing, will be moved to profile page later*/}
                 <button
                     type="button"
                     onClick={auth.logout}
