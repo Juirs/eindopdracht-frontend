@@ -1,7 +1,7 @@
 import {createContext, useEffect, useState} from "react";
 import {jwtDecode} from 'jwt-decode';
-import isTokenValid from "../../helpers/isTokenValid/isTokenValid";
-import api from "../../helpers/api/api.js";
+import isTokenValid from "../helpers/isTokenValid.js";
+import api from "../helpers/api.js";
 
 export const AuthContext = createContext({});
 
@@ -16,28 +16,29 @@ function AuthContextProvider({children}) {
         const token = localStorage.getItem('token');
 
         if (token) {
-            try {
-                const decodedToken = jwtDecode(token);
-                if (isTokenValid(decodedToken)) {
+            (async () => {
+                try {
+                    const decodedToken = jwtDecode(token);
+                    if (isTokenValid(decodedToken)) {
+                        const userDetails = await fetchUserDetailsAndProfile(decodedToken.sub);
+                        setAuth({
+                            isAuthenticated: true,
+                            user: userDetails,
+                            status: 'done',
+                        });
+                    } else {
+                        logout();
+                    }
+                } catch (error) {
+                    console.error('Error decoding token:', error);
+                    localStorage.removeItem('token');
                     setAuth({
-                        isAuthenticated: true,
-                        user: {
-                            username: decodedToken.sub,
-                        },
+                        isAuthenticated: false,
+                        user: null,
                         status: 'done',
                     });
-                } else {
-                    logout();
                 }
-            } catch (error) {
-                console.error('Error decoding token:', error);
-                localStorage.removeItem('token');
-                setAuth({
-                    isAuthenticated: false,
-                    user: null,
-                    status: 'done',
-                });
-            }
+            })();
         } else {
             setAuth({
                 isAuthenticated: false,
@@ -60,16 +61,7 @@ function AuthContextProvider({children}) {
 
         try {
             const decoded = jwtDecode(authResponse.jwt);
-            let userDetails;
-
-            try {
-                userDetails = await api.users.getUser(decoded.sub);
-                console.log('User details fetched from API:', userDetails);
-            } catch (error) {
-                console.error('Failed to fetch user details from API', error);
-                userDetails = null;
-            }
-
+            const userDetails = await fetchUserDetailsAndProfile(decoded.sub);
             setAuth({
                 isAuthenticated: true,
                 user: userDetails,
@@ -95,6 +87,22 @@ function AuthContextProvider({children}) {
             status: 'done',
         });
         console.log("User logged out");
+    }
+
+    async function fetchUserDetailsAndProfile(username) {
+        try {
+            const userDetails = await api.users.getUser(username);
+            const userProfile = await api.profiles.getProfile(username);
+            const fullUserDetails = {
+                ...userDetails,
+                ...userProfile,
+            }
+            console.log("User details fetched successfully:", fullUserDetails);
+            return fullUserDetails;
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+            return null;
+        }
     }
 
     return (
