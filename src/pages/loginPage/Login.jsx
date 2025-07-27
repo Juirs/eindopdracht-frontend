@@ -1,6 +1,6 @@
 import {useContext, useState} from "react";
-import {AuthContext} from "../../context/auth/AuthContext.jsx";
-import api from "../../helpers/api/api.js";
+import {AuthContext} from "../../context/AuthContext.jsx";
+import api from "../../helpers/api.js";
 import {Link, useNavigate} from "react-router-dom";
 import './Login.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
@@ -42,7 +42,7 @@ function Login() {
                     <img src={logo} alt="Logo" className="logo"/>
                 </div>
                 <p>Don't have an account yet? <Link to="/signup">Sign up!</Link></p>
-                <form onSubmit={handleLogin} className="login-form">
+                <form onSubmit={handleLogin} className="login-form auth-form">
                     {error && <div className="error">{error}</div>}
                     {message && <div className="success">{message}</div>}
 

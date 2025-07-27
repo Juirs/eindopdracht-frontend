@@ -1,5 +1,5 @@
 import {useState} from "react";
-import api from "../../helpers/api/api.js";
+import api from "../../helpers/api.js";
 import {Link, useNavigate} from "react-router-dom";
 import './PasswordReset.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
@@ -40,7 +40,7 @@ function PasswordReset() {
                 </div>
                 <h2>Change Your Password</h2>
                 <p>Enter your username and new password to change your password.</p>
-                <form onSubmit={handlePasswordReset} className="password-reset-form">
+                <form onSubmit={handlePasswordReset} className="password-reset-form auth-form">
                     {error && <div className="error">{error}</div>}
                     {message && <div className="success">{message}</div>}
 

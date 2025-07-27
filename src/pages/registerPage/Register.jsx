@@ -1,5 +1,5 @@
 import {useState} from "react";
-import api from "../../helpers/api/api.js";
+import api from "../../helpers/api.js";
 import {useNavigate} from "react-router-dom";
 import './Register.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
@@ -28,12 +28,14 @@ function Register() {
             }, 2000);
         } catch (e) {
             console.error("Error during registration:", e);
-            let errorMessage = 'Registration failed. Please try again.';
-            const errorValues = Object.values(e.response.data);
-            if (errorValues.length > 0) {
-                errorMessage = errorValues.join(', ');
+
+            if (e.response?.data?.includes('users_email_key')) {
+                setError('This email is already registered. Please use a different email.');
+            } else if (e.response?.data?.includes('users_username_key')) {
+                setError('This username is already taken. Please choose a different username.');
+            } else {
+                setError('Registration failed. Please try again.');
             }
-            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -45,7 +47,7 @@ function Register() {
                 <div className="logo-container">
                     <img src={logo} alt="Logo" className="logo"/>
                 </div>
-                <form onSubmit={handleRegister} className="register-form">
+                <form onSubmit={handleRegister} className="register-form auth-form">
                     {error && <div className="error">{error}</div>}
                     {message && <div className="success">{message}</div>}
 
