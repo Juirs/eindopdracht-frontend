@@ -1,5 +1,8 @@
 # IndieVerse Frontend - Installation Manual
 
+#### GitHub link to backend
+- https://github.com/Juirs/eindopdracht-backend
+
 ## Overview
 IndieVerse is a platform that connects indie game developers with gamers, creating a space where developers can showcase their work, get feedback, and build a community.
 
