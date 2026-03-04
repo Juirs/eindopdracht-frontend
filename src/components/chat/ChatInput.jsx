@@ -3,14 +3,19 @@ import './ChatModule.css';
 
 const ChatInput = ({ onSendMessage }) => {
     const [text, setText] = useState('');
+    const [isSending, setIsSending] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const trimmedText = text.trim();
-        if (trimmedText)
-        {
-            onSendMessage(trimmedText);
+        if (!trimmedText || isSending) return;
+
+        try {
+            setIsSending(true);
+            await onSendMessage(trimmedText);
             setText('');
+        } finally {
+            setIsSending(false);
         }
     };
 
@@ -23,7 +28,7 @@ const ChatInput = ({ onSendMessage }) => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
             />
-            <button type="submit" className="sendButton" disabled={!text.trim()}>
+            <button type="submit" className="sendButton" disabled={!text.trim() || isSending}>
                 Send
             </button>
         </form>

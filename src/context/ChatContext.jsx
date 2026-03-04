@@ -1,13 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import { useAuth } from './AuthContext.jsx';
+import {createContext, useContext, useEffect, useState, useCallback, useMemo, useRef} from 'react';
+import {useAuth} from './AuthContext.jsx';
 import * as chatSocket from '../helpers/chatSocket.js';
 import api from '../helpers/api.js';
 
 export const ChatContext = createContext(null);
 
-export function ChatContextProvider({ children }) {
-    const { isAuthenticated, user } = useAuth();
+export function ChatContextProvider({children}) {
+    const {isAuthenticated, user} = useAuth();
     const [messages, setMessages] = useState({}); // Stores as { username: [message objects] }
     const [activeConversations, setActiveConversations] = useState([]);
     const [unreadCounts, setUnreadCounts] = useState({});
@@ -130,7 +130,15 @@ export function ChatContextProvider({ children }) {
             return [...prev, recipientId];
         });
 
-        chatSocket.sendMessage('/app/chat.send', payload);
+        const sent = chatSocket.sendMessage('/app/chat.send', payload);
+        if (!sent) {
+            setMessages(prev => ({
+                ...prev,
+                [recipientId]: (prev[recipientId] || []).filter(msg => msg !== optimisticMessage)
+            }));
+            return false;
+        }
+        return true;
     }, [user]);
 
     const markAsRead = useCallback((username) => {

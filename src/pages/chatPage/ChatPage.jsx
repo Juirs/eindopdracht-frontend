@@ -7,7 +7,7 @@ import ChatWindow from '../../components/chat/ChatWindow.jsx';
 import './ChatPage.css';
 
 const ChatPage = () => {
-    const { user } = useAuth();
+    const { user, isAuthenticated } = useAuth();
     const { 
         messages, 
         activeConversations, 
@@ -23,18 +23,30 @@ const ChatPage = () => {
     const [loadingFriends, setLoadingFriends] = useState(true);
 
     useEffect(() => {
+        let cancelled = false;
         const fetchFriends = async () => {
+            if (!isAuthenticated) {
+                setFriends([]);
+                setLoadingFriends(false);
+                setActiveChatUser(null);
+                return;
+            }
             try {
+                setLoadingFriends(true);
                 const data = await api.friends.getFriends();
-                setFriends(data);
+                if(!cancelled) setFriends(data);
             } catch (err) {
                 console.error("Error fetching friends:", err);
+                if (!cancelled) setFriends([]);
             } finally {
-                setLoadingFriends(false);
+                if (!cancelled) setLoadingFriends(false);
             }
         };
         fetchFriends();
-    }, []);
+        return () => {
+            cancelled = true;
+        };
+    }, [isAuthenticated, user?.username, setActiveChatUser]);
 
     const handleSelectUser = async (username) => {
         if (loadingFriends) return;
