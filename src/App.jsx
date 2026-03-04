@@ -1,6 +1,7 @@
 import './App.css'
 import Navigation from "./components/navigation/Navigation.jsx";
 import Sidebar from "./components/sidebar/Sidebar.jsx";
+import ChatBar from "./components/chatBar/ChatBar.jsx";
 import {Route, Routes, useLocation} from "react-router-dom";
 import Login from "./pages/loginPage/Login.jsx";
 import Home from "./pages/homePage/Home.jsx";
@@ -13,6 +14,7 @@ import CreateGame from "./pages/createGamePage/CreateGame.jsx";
 import MyGames from "./pages/myGamesPage/MyGames.jsx";
 import GameJam from "./pages/gameJamPage/GameJam.jsx";
 import CreateGameJam from "./pages/createGameJamPage/CreateGameJam.jsx";
+import ChatPage from "./pages/chatPage/ChatPage.jsx";
 
 function App() {
     const location = useLocation();
@@ -47,8 +49,10 @@ function App() {
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/upload-game" element={<CreateGame />} />
                         <Route path="/my-games" element={<MyGames />} />
+                        <Route path="/chat" element={<ChatPage />} />
                     </Routes>
                 </div>
+                <ChatBar />
             </div>
         </div>
     );

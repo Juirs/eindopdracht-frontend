@@ -84,7 +84,6 @@ button:hover {
 .auth-form .form-group {
     display: flex;
     align-items: center;
-    background-color: #f7f7f7;
     border-radius: 6px;
     padding: 10px 12px;
     margin-bottom: 16px;
@@ -97,7 +96,7 @@ button:hover {
     background: none;
     outline: none;
     font-size: 14px;
-    color: #333;
+    color: #fff;
 }
 
 .form-group label {
