@@ -1,12 +1,14 @@
 import './Profile.css';
-import {useContext, useState} from "react";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useState} from "react";
+import {useAuth} from "../../context/AuthContext.jsx";
 import api from "../../helpers/api.js";
 import userAvatar from '../../assets/user-placeholder.png';
 import {getCategoryDisplayName, getAllCategories} from "../../helpers/categoryHelpers.js";
 
+import {getErrorMessage} from "../../helpers/errorUtils.js";
+
 function Profile() {
-    const {user, isAuthenticated} = useContext(AuthContext);
+    const {user, isAuthenticated} = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState('');
@@ -65,7 +67,7 @@ function Profile() {
             setTimeout(() => setSuccess(''), 5000);
         } catch (err) {
             console.error("Error updating profile:", err);
-            setError("Failed to update profile. Please try again.");
+            setError(getErrorMessage(err, "Failed to update profile. Please try again."));
         } finally {
             setLoading(false);
         }
@@ -96,7 +98,7 @@ function Profile() {
             setTimeout(() => setSuccess(''), 5000);
         } catch (err) {
             console.error("Error uploading avatar:", err);
-            setError("Failed to upload avatar. Please try again.");
+            setError(getErrorMessage(err, "Failed to upload avatar. Please try again."));
         } finally {
             setUploadingAvatar(false);
         }

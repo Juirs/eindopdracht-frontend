@@ -1,12 +1,12 @@
 import './MyGames.css';
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
 import api from "../../helpers/api.js";
 import GameCard from "../../components/gameCard/GameCard.jsx";
 
 function MyGames() {
-    const {user, isAuthenticated} = useContext(AuthContext);
+    const {user, isAuthenticated} = useAuth();
     const navigate = useNavigate();
     const [myGames, setMyGames] = useState([]);
     const [loading, setLoading] = useState(true);

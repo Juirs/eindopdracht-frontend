@@ -1,11 +1,10 @@
 import {NavLink, useNavigate} from "react-router-dom";
-import {useContext} from "react";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
 import api from "../../helpers/api.js";
 import './Sidebar.css';
 
 function Sidebar() {
-    const {isAuthenticated, user} = useContext(AuthContext);
+    const {isAuthenticated, user} = useAuth();
     const navigate = useNavigate();
     const isDeveloper = user?.roles?.includes('DEVELOPER') || false;
 
@@ -65,11 +64,18 @@ function Sidebar() {
                 )}
 
                 {isAuthenticated && (
-                    <li>
-                        <NavLink to="/profile" className={({ isActive }) => isActive ? "active-link" : "default-link"}>
-                            👤 Profile
-                        </NavLink>
-                    </li>
+                    <>
+                        <li>
+                            <NavLink to="/chat" className={({ isActive }) => isActive ? "active-link" : "default-link"}>
+                                💬 Chat
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/profile" className={({ isActive }) => isActive ? "active-link" : "default-link"}>
+                                👤 Profile
+                            </NavLink>
+                        </li>
+                    </>
                 )}
             </ul>
         </div>

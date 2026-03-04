@@ -1,8 +1,9 @@
 import {useState} from "react";
 import api from "../../helpers/api.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import './Register.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
+import {getErrorMessage} from "../../helpers/errorUtils.js";
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -28,14 +29,7 @@ function Register() {
             }, 2000);
         } catch (e) {
             console.error("Error during registration:", e);
-
-            if (e.response?.data?.includes('users_email_key')) {
-                setError('This email is already registered. Please use a different email.');
-            } else if (e.response?.data?.includes('users_username_key')) {
-                setError('This username is already taken. Please choose a different username.');
-            } else {
-                setError('Registration failed. Please try again.');
-            }
+            setError(getErrorMessage(e, 'Registration failed. Please check your details and try again.'));
         } finally {
             setIsLoading(false);
         }
@@ -100,6 +94,7 @@ function Register() {
                         {isLoading ? 'Registering user...' : 'Sign up'}
                     </button>
                 </form>
+                <p>Already have an account? <Link to="/signin">Log in!</Link></p>
             </div>
         </div>
     );

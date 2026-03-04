@@ -43,6 +43,7 @@ export const connect = (token, onMessageReceived, onConnectSuccess, onConnection
     stompClient.onStompError = (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
         console.error('Additional details: ' + frame.body);
+        onConnectionStateChange?.(false);
     };
 
     stompClient.onWebSocketClose = (evt) => {
