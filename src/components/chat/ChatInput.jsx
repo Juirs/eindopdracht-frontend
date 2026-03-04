@@ -1,0 +1,31 @@
+import { useState } from 'react';
+import './ChatModule.css';
+
+const ChatInput = ({ onSendMessage }) => {
+    const [text, setText] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (text.trim()) {
+            onSendMessage(text);
+            setText('');
+        }
+    };
+
+    return (
+        <form className="inputContainer" onSubmit={handleSubmit}>
+            <input
+                type="text"
+                className="chatInput"
+                placeholder="Type a message..."
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+            />
+            <button type="submit" className="sendButton" disabled={!text.trim()}>
+                Send
+            </button>
+        </form>
+    );
+};
+
+export default ChatInput;
