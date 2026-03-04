@@ -58,7 +58,8 @@ export function ChatContextProvider({children}) {
                 chatSocket.connect(
                     token,
                     handleIncomingMessage,
-                    () => setIsConnected(true)
+                    () => setIsConnected(true),
+                    setIsConnected
                 );
             }
         } else {

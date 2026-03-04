@@ -119,18 +119,18 @@ function ChatBar() {
     };
 
     const handleStartChat = async (username) => {
-        if (!openChats.includes(username)) {
-            if (openChats.length >= 3) {
-                // Limit to 3 open chats for UI sanity, removing the oldest one if needed
-                setOpenChats(prev => [...prev.slice(1), username]);
-            } else {
-                setOpenChats(prev => [...prev, username]);
-            }
-        }
         const loaded = await loadConversation(username);
-        if (loaded) {
-            markAsRead(username);
+        if (!loaded) {
+            setError(`Could not open chat with ${username}. Please try again.`);
+            return;
         }
+
+        markAsRead(username);
+        setOpenChats(prev => {
+            if (prev.includes(username)) return prev;
+            if (prev.length >= 3) return [...prev.slice(1), username];
+            return [...prev, username];
+        });
     };
 
     const handleCloseChat = (username) => {
@@ -193,7 +193,7 @@ function ChatBar() {
                             ) : (
                                 <ul className="friendList">
                                     {pendingRequests.map(req => (
-                                        <li key={req.id} className="friendItem">
+                                        <li key={req.id ?? req.username} className="friendItem">
                                             <span className="friend-username">{req.username}</span>
                                             <div className="friendActions">
                                                 <button onClick={() => handleAcceptRequest(req.username)}
@@ -216,7 +216,7 @@ function ChatBar() {
                             ) : (
                                 <ul className="friendList">
                                     {friends.map(friend => (
-                                        <li key={friend.id} className="friendItem">
+                                        <li key={friend.id ?? friend.username} className="friendItem">
                                             <button
                                                 type="button"
                                                 className="friend-username clickable"
@@ -248,7 +248,7 @@ function ChatBar() {
                                             <li className="empty-text">No friendships found.</li>
                                         ) : (
                                             allFriendships.map(f => (
-                                                <li key={f.id} className="friendItem adminItem">
+                                                <li key={f.id ?? `${f.username}-${f.status}`} className="friendItem adminItem">
                                                     <div className="adminFriendInfo">
                                                         <span className="friend-username">{f.username}</span>
                                                         <span

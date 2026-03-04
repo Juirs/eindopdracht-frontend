@@ -74,8 +74,9 @@ const ChatPage = () => {
 
     const handleSendMessage = (content) => {
         if (activeChatUser) {
-            sendMessage(activeChatUser, content);
+            return sendMessage(activeChatUser, content);
         }
+        return false;
     };
 
     const filteredConversations = activeConversations.filter(username => 
