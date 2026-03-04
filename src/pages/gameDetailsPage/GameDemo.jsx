@@ -1,14 +1,17 @@
 import './GameDemo.css';
-import {useEffect, useState, useContext} from "react";
-import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useParams, useNavigate} from "react-router-dom";
 import api from "../../helpers/api.js";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
+import {useChat} from "../../context/ChatContext.jsx";
 import userAvatar from '../../assets/user-placeholder.png';
 import {getCategoryDisplayName} from "../../helpers/categoryHelpers.js";
 
 function GameDemo() {
     const {gameId} = useParams();
-    const {isAuthenticated, user} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const {isAuthenticated, user} = useAuth();
+    const {loadConversation} = useChat();
 
     const [game, setGame] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -16,6 +19,7 @@ function GameDemo() {
     const [error, setError] = useState(null);
     const [selectedMedia, setSelectedMedia] = useState(null);
     const [selectedMediaType, setSelectedMediaType] = useState('image');
+    const [friends, setFriends] = useState([]);
     const [reviewRating, setReviewRating] = useState(5);
     const [reviewComment, setReviewComment] = useState('');
     const [developerProfile, setDeveloperProfile] = useState({
@@ -32,6 +36,23 @@ function GameDemo() {
             fetchReviews();
         }
     }, [gameId]);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setFriends([]);
+            return;
+        }
+        fetchFriends();
+    }, [isAuthenticated, user?.username]);
+
+    async function fetchFriends() {
+        try {
+            const data = await api.friends.getFriends();
+            setFriends(data);
+        } catch (err) {
+            console.error("Error fetching friends:", err);
+        }
+    }
 
     async function fetchGameData() {
         setLoading(true);
@@ -395,7 +416,26 @@ function GameDemo() {
                         <div className="detail-list">
                             <div className="detail-item">
                                 <span>Developer:</span>
-                                <span>{developerProfile.username}</span>
+                                <span>
+                                    {developerProfile.username}
+                                    {isAuthenticated && user?.username !== developerProfile.username &&
+                                        friends.some(f => f.username === developerProfile.username) && (
+                                            <button
+                                                className="message-dev-btn"
+                                                onClick={async () => {
+                                                    const loaded = await loadConversation(developerProfile.username);
+                                                    if (loaded) {
+                                                        navigate('/chat');
+                                                    } else {
+                                                        alert(`Could not start chat with ${developerProfile.username}. Please try again.`);
+                                                    }
+                                                }}
+                                                title={`Message ${developerProfile.username}`}
+                                            >
+                                                💬
+                                            </button>
+                                        )}
+                                </span>
                             </div>
                             <div className="detail-item">
                                 <span>Category:</span>

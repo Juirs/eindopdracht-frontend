@@ -1,0 +1,308 @@
+.chatBarContainer {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    display: flex;
+    align-items: flex-end;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.openChatsContainer {
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+    margin-right: 15px;
+}
+
+.floatingChatWindow {
+    width: 320px;
+    height: 450px;
+    background-color: #242424;
+    border: 1px solid #333;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+/* Override ChatWindow styles when floating */
+.floatingChatWindow .chatWindow {
+    height: 100%;
+    flex: 1;
+}
+
+.friendsDropUp {
+    width: 280px;
+    pointer-events: auto;
+    position: relative;
+}
+
+.friendsToggleBtn {
+    background-color: #8800ff;
+    width: 100%;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px 12px 0 0;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s;
+}
+
+.friendsToggleBtn:hover {
+    background-color: #a033ff;
+}
+
+.friendsListContent {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    width: 280px;
+    max-height: 500px;
+    background-color: rgba(20, 0, 40, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(136, 0, 255, 0.4);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    padding: 1.2rem;
+    overflow-y: auto;
+    color: white;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.friendsListContent::-webkit-scrollbar {
+    width: 6px;
+}
+
+.friendsListContent::-webkit-scrollbar-thumb {
+    background: rgba(136, 0, 255, 0.3);
+    border-radius: 3px;
+}
+
+.chatBarHeader h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #a060ff;
+    border-bottom: 1px solid rgba(160, 96, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.addFriendSection {
+    margin-bottom: 1.5rem;
+}
+
+.addFriendForm {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.addFriendForm input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(160, 96, 255, 0.25);
+    border-radius: 6px;
+    padding: 0.5rem;
+    color: white;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.addFriendForm input:focus {
+    border-color: #a060ff;
+}
+
+.addFriendForm button {
+    background: #8800ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.2s;
+}
+
+.addFriendForm button:hover {
+    background: #a033ff;
+}
+
+.error-text {
+    color: #ff4444;
+    font-size: 0.75rem;
+    margin-top: 0.4rem;
+}
+
+.success-text {
+    color: #28a745;
+    font-size: 0.75rem;
+    margin-top: 0.4rem;
+}
+
+.friendSection {
+    margin-bottom: 1rem;
+}
+
+.friendSection h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.5px;
+}
+
+.empty-text {
+    font-size: 0.75rem;
+    color: #666;
+    font-style: italic;
+}
+
+.friendList {
+    list-style: none;
+    padding: 0;
+}
+
+.friendItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.friend-username {
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+}
+
+.friend-username.clickable {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.friend-username.clickable:hover {
+    color: #a060ff;
+    text-decoration: underline;
+}
+
+.friendActions {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.acceptBtn, .declineBtn {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: white;
+}
+
+.acceptBtn {
+    background: #28a745;
+}
+
+.declineBtn {
+    background: #dc3545;
+}
+
+.removeBtn {
+    background: transparent;
+    color: #666;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.65rem;
+    cursor: pointer;
+}
+
+.removeBtn:hover {
+    color: #ff4444;
+    border-color: #ff4444;
+}
+
+.adminSection {
+    margin-top: 1.5rem;
+    border-top: 1px dashed rgba(160, 96, 255, 0.2);
+    padding-top: 1rem;
+}
+
+.adminToggleBtn {
+    width: 100%;
+    background: rgba(160, 96, 255, 0.05);
+    color: #a060ff;
+    border: 1px solid rgba(160, 96, 255, 0.2);
+    border-radius: 4px;
+    padding: 0.4rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    margin-bottom: 0.8rem;
+}
+
+.adminFriendInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.status-badge {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+    width: fit-content;
+}
+
+.status-accepted {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.status-pending {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.status-blocked {
+    background: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .openChatsContainer {
+        display: none; /* Hide floating chats on mobile */
+    }
+    
+    .friendsListContent {
+        width: 100vw;
+        right: -20px;
+        bottom: 100%;
+        border-radius: 0;
+    }
+}

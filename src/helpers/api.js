@@ -8,7 +8,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = {'Content-Type': 'application/json'};
     if (token) {
         headers.Authorization = `Bearer ${token}`;
     }
@@ -34,15 +34,15 @@ export const authApi = {
             username,
             password
         }, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {'Content-Type': 'application/json'}
         });
         return response.data;
     },
 
     changePassword: async (username, newPassword) => {
         const response = await axios.put(`${API_BASE_URL}/users/${username}/change-password`,
-            { newPassword },
-            { headers: getAuthHeaders() }
+            {newPassword},
+            {headers: getAuthHeaders()}
         );
         return response.data;
     }
@@ -58,9 +58,9 @@ export const userApi = {
         await axios.post(`${API_BASE_URL}${url}`, {
             username,
             password,
-            email
+            email,
         }, {
-            headers: { 'Content-Type': 'application/json' }
+            headers: {'Content-Type': 'application/json'}
         });
     },
 
@@ -265,6 +265,85 @@ export const gameJamApi = {
 };
 
 // ============================================================================
+// CHAT
+// ============================================================================
+
+export const chatApi = {
+    getConversation: async (username) => {
+        const safeUsername = encodeURIComponent(username);
+        const response = await axios.get(`${API_BASE_URL}/chat/with/${safeUsername}`, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    }
+};
+
+// ============================================================================
+// FRIENDS
+// ============================================================================
+
+export const friendApi = {
+    getFriends: async () => {
+        const response = await axios.get(`${API_BASE_URL}/friends`, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    },
+
+    getPendingRequests: async () => {
+        const response = await axios.get(`${API_BASE_URL}/friends/pending`, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    },
+
+    getAllFriendships: async () => {
+        const response = await axios.get(`${API_BASE_URL}/friends/all`, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    },
+
+    sendFriendRequest: async (username) => {
+        console.log(`API Call: POST /friends/request with friendUsername: ${username}`);
+        const response = await axios.post(`${API_BASE_URL}/friends/request`, {friendUsername: username}, {
+            headers: getAuthHeaders()
+        });
+        console.log('API Response for POST /friends/request:', response.data);
+        return response.data;
+    },
+
+    acceptFriendRequest: async (username) => {
+        console.log(`API Call: PUT /friends/accept for friendUsername: ${username}`);
+        const response = await axios.put(`${API_BASE_URL}/friends/accept`, {friendUsername: username}, {
+            headers: getAuthHeaders()
+        });
+        console.log('API Response for PUT /friends/accept:', response.data);
+        return response.data;
+    },
+
+    declineFriendRequest: async (username) => {
+        console.log(`API Call: DELETE /friends/decline for friendUsername: ${username}`);
+        const response = await axios.delete(`${API_BASE_URL}/friends/decline`, {
+            headers: getAuthHeaders(),
+            data: {friendUsername: username}
+        });
+        console.log('API Response for DELETE /friends/decline:', response.data);
+        return response.data;
+    },
+
+    removeFriend: async (username) => {
+        console.log(`API Call: DELETE /friends/remove for friendUsername: ${username}`);
+        const response = await axios.delete(`${API_BASE_URL}/friends/remove`, {
+            headers: getAuthHeaders(),
+            data: {friendUsername: username}
+        });
+        console.log('API Response for DELETE /friends/remove:', response.data);
+        return response.data;
+    }
+};
+
+// ============================================================================
 // DEFAULT EXPORT
 // ============================================================================
 
@@ -275,6 +354,8 @@ const api = {
     games: gameApi,
     reviews: reviewApi,
     gameJams: gameJamApi,
+    chat: chatApi,
+    friends: friendApi,
 };
 
 export default api;
