@@ -45,7 +45,6 @@ const ChatPage = () => {
             return;
         }
 
-        console.log(`ChatPage: handleSelectUser called for ${username}`);
         const success = await loadConversation(username);
         if (success) {
             markAsRead(username);
