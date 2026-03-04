@@ -270,11 +270,9 @@ export const gameJamApi = {
 
 export const chatApi = {
     getConversation: async (username) => {
-        console.log(`API Call: GET /chat/with/${username}`);
         const response = await axios.get(`${API_BASE_URL}/chat/with/${username}`, {
             headers: getAuthHeaders()
         });
-        console.log(`API Response for /chat/with/${username}:`, response.data);
         return response.data;
     }
 };
