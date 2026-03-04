@@ -1,10 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from './AuthContext.jsx';
 import * as chatSocket from '../helpers/chatSocket.js';
 import api from '../helpers/api.js';
 
-export const ChatContext = createContext({});
+export const ChatContext = createContext(null);
 
 export function ChatContextProvider({ children }) {
     const { isAuthenticated, user } = useAuth();
@@ -13,11 +13,21 @@ export function ChatContextProvider({ children }) {
     const [unreadCounts, setUnreadCounts] = useState({});
     const [isConnected, setIsConnected] = useState(false);
     const [activeChatUser, setActiveChatUser] = useState(null);
+    const activeChatUserRef = useRef(null);
+    const currentUsernameRef = useRef(null);
+
+    useEffect(() => {
+        activeChatUserRef.current = activeChatUser;
+    }, [activeChatUser]);
+
+    useEffect(() => {
+        currentUsernameRef.current = user?.username ?? null;
+    }, [user?.username]);
 
     const handleIncomingMessage = useCallback((message) => {
         if (!message) return;
 
-        const isOwnMessage = message.senderUsername === user?.username;
+        const isOwnMessage = message.senderUsername === currentUsernameRef.current;
         if (isOwnMessage) return;
 
         const otherUser = message.senderUsername;
@@ -33,13 +43,13 @@ export function ChatContextProvider({ children }) {
         });
 
         // Increment unread count only if the conversation isn't the one currently being viewed
-        if (otherUser !== activeChatUser) {
+        if (otherUser !== activeChatUserRef.current) {
             setUnreadCounts(prev => ({
                 ...prev,
                 [otherUser]: (prev[otherUser] || 0) + 1
             }));
         }
-    }, [user?.username, activeChatUser]);
+    }, []);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -152,7 +162,7 @@ export function ChatContextProvider({ children }) {
 
 export const useChat = () => {
     const context = useContext(ChatContext);
-    if (!context) {
+    if (context === null) {
         throw new Error('useChat must be used within a ChatContextProvider');
     }
     return context;
