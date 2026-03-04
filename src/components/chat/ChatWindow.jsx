@@ -35,9 +35,9 @@ const ChatWindow = ({ currentUser, recipient, messages, onSendMessage, onClose }
             <div className="messagesContainer">
                 {messages && messages.map((msg, index) => (
                     <MessageBubble
-                        key={index}
+                        key={msg.id || index}
                         message={msg}
-                        isOwnMessage={msg.senderUsername === currentUser.username}
+                        isOwnMessage={msg.senderUsername === currentUser?.username}
                     />
                 ))}
                 <div ref={messagesEndRef} />
