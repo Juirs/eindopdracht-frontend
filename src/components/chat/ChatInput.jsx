@@ -6,8 +6,10 @@ const ChatInput = ({ onSendMessage }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (text.trim()) {
-            onSendMessage(text);
+        const trimmedText = text.trim();
+        if (trimmedText)
+        {
+            onSendMessage(trimmedText);
             setText('');
         }
     };
