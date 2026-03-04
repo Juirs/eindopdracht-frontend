@@ -203,13 +203,14 @@ function ChatBar() {
                                 <ul className="friendList">
                                     {friends.map(friend => (
                                         <li key={friend.id} className="friendItem">
-                                            <span 
+                                            <button
+                                                type="button"
                                                 className="friend-username clickable" 
                                                 onClick={() => handleStartChat(friend.username)}
                                                 title="Start Chat"
                                             >
                                                 {friend.username}
-                                            </span>
+                                            </button>
                                             <button onClick={() => handleRemoveFriend(friend.username)} className="removeBtn" title="Remove">Remove</button>
                                         </li>
                                     ))}
@@ -228,7 +229,7 @@ function ChatBar() {
                                 {showAllFriendships && (
                                     <ul className="friendList">
                                         {allFriendships.length === 0 ? (
-                                            <p className="empty-text">No friendships found.</p>
+                                            <li className="empty-text">No friendships found.</li>
                                         ) : (
                                             allFriendships.map(f => (
                                                 <li key={f.id} className="friendItem adminItem">
