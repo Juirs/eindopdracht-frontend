@@ -476,3 +476,21 @@
     gap: 1rem;
     width: 100%;
 }
+
+.message-dev-btn {
+    background: rgba(136, 0, 255, 0.2);
+    border: 1px solid rgba(136, 0, 255, 0.4);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.message-dev-btn:hover {
+    background: rgba(136, 0, 255, 0.4);
+    border-color: rgba(136, 0, 255, 0.6);
+    transform: scale(1.1);
+}
