@@ -38,10 +38,12 @@ function GameDemo() {
     }, [gameId]);
 
     useEffect(() => {
-        if (isAuthenticated) {
-            fetchFriends();
+        if (!isAuthenticated) {
+            setFriends([]);
+            return;
         }
-    }, [isAuthenticated]);
+        fetchFriends();
+    }, [isAuthenticated, user?.username]);
 
     async function fetchFriends() {
         try {
