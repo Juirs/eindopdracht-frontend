@@ -141,10 +141,6 @@
     border-bottom-right-radius: 2px;
 }
 
-.theirMessage .messageWrapper {
-    justify-content: flex-end;
-}
-
 .messageContent {
     margin: 0;
     line-height: 1.4;
