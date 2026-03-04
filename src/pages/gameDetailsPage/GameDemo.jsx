@@ -418,21 +418,23 @@ function GameDemo() {
                                 <span>Developer:</span>
                                 <span>
                                     {developerProfile.username}
-                                    {isAuthenticated && user?.username !== developerProfile.username && 
-                                     friends.some(f => f.username === developerProfile.username) && (
-                                        <button 
-                                            className="message-dev-btn"
-                                            onClick={async () => {
-                                                const loaded = await loadConversation(developerProfile.username);
-                                                if (loaded) {
-                                                    navigate('/chat');
-                                                }
-                                            }}
-                                            title={`Message ${developerProfile.username}`}
-                                        >
-                                            💬
-                                        </button>
-                                    )}
+                                    {isAuthenticated && user?.username !== developerProfile.username &&
+                                        friends.some(f => f.username === developerProfile.username) && (
+                                            <button
+                                                className="message-dev-btn"
+                                                onClick={async () => {
+                                                    const loaded = await loadConversation(developerProfile.username);
+                                                    if (loaded) {
+                                                        navigate('/chat');
+                                                    } else {
+                                                        alert(`Could not start chat with ${developerProfile.username}. Please try again.`);
+                                                    }
+                                                }}
+                                                title={`Message ${developerProfile.username}`}
+                                            >
+                                                💬
+                                            </button>
+                                        )}
                                 </span>
                             </div>
                             <div className="detail-item">

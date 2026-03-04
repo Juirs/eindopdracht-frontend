@@ -25,7 +25,7 @@ export function ChatContextProvider({children}) {
     }, [user?.username]);
 
     const handleIncomingMessage = useCallback((message) => {
-        if (!message) return;
+        if (!message || !message.senderUsername) return;
 
         const isOwnMessage = message.senderUsername === currentUsernameRef.current;
         if (isOwnMessage) return;
@@ -104,7 +104,7 @@ export function ChatContextProvider({children}) {
     }, []);
 
     const sendMessage = useCallback((recipientId, content) => {
-        if (!user || !content.trim()) return;
+        if (!user || !content.trim()) return false;
 
         // Backend expects ChatRequest: { recipientUsername, content }
         const payload = {

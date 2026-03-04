@@ -6,9 +6,9 @@ import api from "../../helpers/api.js";
 import ChatWindow from "../chat/ChatWindow.jsx";
 
 function ChatBar() {
-    const { isAuthenticated, user } = useAuth();
-    const { messages, loadConversation, sendMessage, markAsRead } = useChat();
-    
+    const {isAuthenticated, user} = useAuth();
+    const {messages, loadConversation, sendMessage, markAsRead} = useChat();
+
     const [friends, setFriends] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
     const [allFriendships, setAllFriendships] = useState([]);
@@ -17,7 +17,7 @@ function ChatBar() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+
     const [isExpanded, setIsExpanded] = useState(false);
     const [openChats, setOpenChats] = useState([]);
 
@@ -30,6 +30,14 @@ function ChatBar() {
             if (isAdmin) {
                 fetchAllFriendships();
             }
+        } else {
+            setFriends([]);
+            setPendingRequests([]);
+            setAllFriendships([]);
+            setOpenChats([]);
+            setShowAllFriendships(false);
+            setError(null);
+            setSuccess(null);
         }
     }, [isAuthenticated, isAdmin]);
 
@@ -85,7 +93,7 @@ function ChatBar() {
             fetchFriends();
             fetchPendingRequests();
         } catch (err) {
-            setError(`Failed to accept request: ${err}`);
+            setError(err.response?.data?.message || "Failed to accept request");
         }
     };
 
@@ -94,7 +102,7 @@ function ChatBar() {
             await api.friends.declineFriendRequest(username);
             fetchPendingRequests();
         } catch (err) {
-            setError(`Failed to decline request: ${err}`);
+            setError(err.response?.data?.message || "Failed to accept request");
         }
     };
 
@@ -105,7 +113,7 @@ function ChatBar() {
                 fetchFriends();
                 setOpenChats(prev => prev.filter(c => c !== username));
             } catch (err) {
-                setError(`Failed to remove friend: ${err}`);
+                setError(err.response?.data?.message || "Failed to accept request");
             }
         }
     };
@@ -146,24 +154,24 @@ function ChatBar() {
             </div>
 
             <div className={`friendsDropUp ${isExpanded ? 'expanded' : ''}`}>
-                <button 
-                    className="friendsToggleBtn" 
+                <button
+                    className="friendsToggleBtn"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
                     Friends ({friends.length})
                 </button>
-                
+
                 {isExpanded && (
                     <div className="friendsListContent">
                         <div className="chatBarHeader">
                             <h2>Friends</h2>
                         </div>
-                        
+
                         <div className="addFriendSection">
                             <form onSubmit={handleSendRequest} className="addFriendForm">
-                                <input 
-                                    type="text" 
-                                    placeholder="Friend Username" 
+                                <input
+                                    type="text"
+                                    placeholder="Friend Username"
                                     value={friendUsername}
                                     onChange={(e) => setFriendUsername(e.target.value)}
                                     disabled={loading}
@@ -186,8 +194,12 @@ function ChatBar() {
                                         <li key={req.id} className="friendItem">
                                             <span className="friend-username">{req.username}</span>
                                             <div className="friendActions">
-                                                <button onClick={() => handleAcceptRequest(req.username)} className="acceptBtn" title="Accept">✓</button>
-                                                <button onClick={() => handleDeclineRequest(req.username)} className="declineBtn" title="Decline">✕</button>
+                                                <button onClick={() => handleAcceptRequest(req.username)}
+                                                        className="acceptBtn" title="Accept">✓
+                                                </button>
+                                                <button onClick={() => handleDeclineRequest(req.username)}
+                                                        className="declineBtn" title="Decline">✕
+                                                </button>
                                             </div>
                                         </li>
                                     ))}
@@ -205,13 +217,15 @@ function ChatBar() {
                                         <li key={friend.id} className="friendItem">
                                             <button
                                                 type="button"
-                                                className="friend-username clickable" 
+                                                className="friend-username clickable"
                                                 onClick={() => handleStartChat(friend.username)}
                                                 title="Start Chat"
                                             >
                                                 {friend.username}
                                             </button>
-                                            <button onClick={() => handleRemoveFriend(friend.username)} className="removeBtn" title="Remove">Remove</button>
+                                            <button onClick={() => handleRemoveFriend(friend.username)}
+                                                    className="removeBtn" title="Remove">Remove
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>
@@ -220,7 +234,7 @@ function ChatBar() {
 
                         {isAdmin && (
                             <div className="friendSection adminSection">
-                                <button 
+                                <button
                                     onClick={() => setShowAllFriendships(!showAllFriendships)}
                                     className="adminToggleBtn"
                                 >
@@ -235,7 +249,8 @@ function ChatBar() {
                                                 <li key={f.id} className="friendItem adminItem">
                                                     <div className="adminFriendInfo">
                                                         <span className="friend-username">{f.username}</span>
-                                                        <span className={`status-badge status-${f.status.toLowerCase()}`}>{f.status}</span>
+                                                        <span
+                                                            className={`status-badge status-${f.status.toLowerCase()}`}>{f.status}</span>
                                                     </div>
                                                 </li>
                                             ))

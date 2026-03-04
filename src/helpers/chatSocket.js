@@ -4,6 +4,13 @@ import SockJS from 'sockjs-client';
 let stompClient = null;
 
 export const connect = (token, onMessageReceived, onConnectSuccess) => {
+    if (stompClient?.active || stompClient?.connected) {
+        return;
+    }
+    if (stompClient) {
+        stompClient.deactivate();
+        stompClient = null;
+    }
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const socketUrl = `${API_BASE_URL}/ws?token=${token}`;
 
@@ -50,7 +57,9 @@ export const connect = (token, onMessageReceived, onConnectSuccess) => {
 
 export const disconnect = () => {
     if (stompClient !== null) {
-        stompClient.deactivate();
+        const client = stompClient;
+        stompClient = null;
+        client.deactivate();
         console.log("Disconnected");
     }
 };
