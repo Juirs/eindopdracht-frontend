@@ -12,8 +12,10 @@ const ChatInput = ({ onSendMessage }) => {
 
         try {
             setIsSending(true);
-            await onSendMessage(trimmedText);
-            setText('');
+            const sent = await onSendMessage(trimmedText);
+            if (sent) {
+                setText('');
+            }
         } finally {
             setIsSending(false);
         }

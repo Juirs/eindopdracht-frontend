@@ -3,7 +3,7 @@ import SockJS from 'sockjs-client';
 
 let stompClient = null;
 
-export const connect = (token, onMessageReceived, onConnectSuccess) => {
+export const connect = (token, onMessageReceived, onConnectSuccess, onConnectionStateChange) => {
     if (stompClient?.active || stompClient?.connected) {
         return;
     }
@@ -26,6 +26,7 @@ export const connect = (token, onMessageReceived, onConnectSuccess) => {
 
     stompClient.onConnect = (frame) => {
         console.log('STOMP Connected: ', frame);
+        onConnectionStateChange?.(true);
         if (onConnectSuccess) onConnectSuccess();
 
         console.log('Subscribing to /user/queue/messages...');
@@ -46,10 +47,12 @@ export const connect = (token, onMessageReceived, onConnectSuccess) => {
 
     stompClient.onWebSocketClose = (evt) => {
         console.warn('WebSocket closed:', evt);
+        onConnectionStateChange?.(false);
     };
 
     stompClient.onWebSocketError = (evt) => {
         console.error('WebSocket error:', evt);
+        onConnectionStateChange?.(false);
     };
 
     stompClient.activate();

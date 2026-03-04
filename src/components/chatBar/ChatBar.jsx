@@ -102,7 +102,7 @@ function ChatBar() {
             await api.friends.declineFriendRequest(username);
             fetchPendingRequests();
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to accept request");
+            setError(err.response?.data?.message || "Failed to decline request");
         }
     };
 
@@ -113,7 +113,7 @@ function ChatBar() {
                 fetchFriends();
                 setOpenChats(prev => prev.filter(c => c !== username));
             } catch (err) {
-                setError(err.response?.data?.message || "Failed to accept request");
+                setError(err.response?.data?.message || "Failed to remove friend");
             }
         }
     };
@@ -127,8 +127,10 @@ function ChatBar() {
                 setOpenChats(prev => [...prev, username]);
             }
         }
-        await loadConversation(username);
-        markAsRead(username);
+        const loaded = await loadConversation(username);
+        if (loaded) {
+            markAsRead(username);
+        }
     };
 
     const handleCloseChat = (username) => {
