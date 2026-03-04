@@ -1,4 +1,4 @@
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 let stompClient = null;
@@ -20,10 +20,9 @@ export const connect = (token, onMessageReceived, onConnectSuccess) => {
     stompClient.onConnect = (frame) => {
         console.log('STOMP Connected: ', frame);
         if (onConnectSuccess) onConnectSuccess();
-        
+
         console.log('Subscribing to /user/queue/messages...');
         stompClient.subscribe('/user/queue/messages', (message) => {
-            console.log('Received raw message from WS:', message.body);
             try {
                 const parsed = JSON.parse(message.body);
                 onMessageReceived?.(parsed);
@@ -57,17 +56,16 @@ export const disconnect = () => {
 };
 
 export const sendMessage = (destination, message) => {
-    console.log(`Sending message to ${destination}:`, message);
     if (stompClient && stompClient.connected) {
         stompClient.publish({
             destination: destination,
-            headers: { 'content-type': 'application/json' },
+            headers: {'content-type': 'application/json'},
             body: JSON.stringify(message),
         });
-        console.log('Message published successfully');
-    } else {
-        console.error("Cannot send message, not connected. stompClient:", stompClient, "connected:", stompClient?.connected);
+        return true;
     }
+    console.error("Cannot send message: STOMP client is not connected.");
+    return false;
 };
 
 export const subscribeToMessages = (callback) => {
