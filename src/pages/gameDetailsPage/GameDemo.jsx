@@ -421,8 +421,10 @@ function GameDemo() {
                                         <button 
                                             className="message-dev-btn"
                                             onClick={async () => {
-                                                await loadConversation(developerProfile.username);
-                                                navigate('/chat');
+                                                const loaded = await loadConversation(developerProfile.username);
+                                                if (loaded) {
+                                                    navigate('/chat');
+                                                }
                                             }}
                                             title={`Message ${developerProfile.username}`}
                                         >
