@@ -42,7 +42,8 @@ const ChatList = ({ conversations, unreadCounts, activeUser, onSelectUser, loadi
                 <p className="emptyList">No conversations yet.</p>
             ) : (
                 conversations.map((username) => (
-                    <div
+                    <button
+                        type="button"
                         key={username}
                         className={`chatListItem ${activeUser === username ? 'active' : ''}`}
                         onClick={() => onSelectUser(username)}
@@ -51,7 +52,7 @@ const ChatList = ({ conversations, unreadCounts, activeUser, onSelectUser, loadi
                         {unreadCounts[username] > 0 && (
                             <span className="unreadBadge">{unreadCounts[username]}</span>
                         )}
-                    </div>
+                    </button>
                 ))
             )}
         </div>
