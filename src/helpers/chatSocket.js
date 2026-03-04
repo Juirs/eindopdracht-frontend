@@ -22,11 +22,13 @@ export const connect = (token, onMessageReceived, onConnectSuccess) => {
         if (onConnectSuccess) onConnectSuccess();
         
         console.log('Subscribing to /user/queue/messages...');
-        // Subscribe to user-specific queue
         stompClient.subscribe('/user/queue/messages', (message) => {
             console.log('Received raw message from WS:', message.body);
-            if (onMessageReceived) {
-                onMessageReceived(JSON.parse(message.body));
+            try {
+                const parsed = JSON.parse(message.body);
+                onMessageReceived?.(parsed);
+            } catch (error) {
+                console.error('Error parsing WS message body:', error);
             }
         });
     };
@@ -71,7 +73,11 @@ export const sendMessage = (destination, message) => {
 export const subscribeToMessages = (callback) => {
     if (stompClient && stompClient.connected) {
         return stompClient.subscribe('/user/queue/messages', (message) => {
-            callback(JSON.parse(message.body));
+            try {
+                callback(JSON.parse(message.body));
+            } catch (error) {
+                console.error('Error parsing WS message body:', error);
+            }
         });
     }
     return null;
