@@ -38,21 +38,25 @@ function GameDemo() {
     }, [gameId]);
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            setFriends([]);
-            return;
-        }
+        let cancelled = false;
+        const fetchFriends = async () => {
+            if (!isAuthenticated) {
+                if (!cancelled) setFriends([]);
+                return;
+            }
+            try {
+                const data = await api.friends.getFriends();
+                if (!cancelled) setFriends(Array.isArray(data) ? data : []);
+            } catch (err) {
+                console.error("Error fetching friends:", err);
+                if (!cancelled) setFriends([]);
+            }
+        };
         fetchFriends();
+        return () => {
+            cancelled = true;
+        };
     }, [isAuthenticated, user?.username]);
-
-    async function fetchFriends() {
-        try {
-            const data = await api.friends.getFriends();
-            setFriends(data);
-        } catch (err) {
-            console.error("Error fetching friends:", err);
-        }
-    }
 
     async function fetchGameData() {
         setLoading(true);

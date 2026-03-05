@@ -1,11 +1,13 @@
 import './CreateGameJam.css';
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import api from "../../helpers/api.js";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
+
+import {getErrorMessage} from "../../helpers/errorUtils.js";
 
 function CreateGameJam() {
-    const {user, isAuthenticated} = useContext(AuthContext);
+    const {user, isAuthenticated} = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -109,7 +111,7 @@ function CreateGameJam() {
             navigate('/game-jams');
         } catch (err) {
             console.error('Error creating game jam:', err);
-            setError(err.response?.data || 'Failed to create game jam. Please try again.');
+            setError(getErrorMessage(err, 'Failed to create game jam. Please try again.'));
         } finally {
             setLoading(false);
         }

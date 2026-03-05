@@ -1,16 +1,27 @@
-import {createContext, useEffect, useState} from "react";
-import {jwtDecode} from 'jwt-decode';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import isTokenValid from "../helpers/isTokenValid.js";
 import api from "../helpers/api.js";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext({});
 
-function AuthContextProvider({children}) {
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthContextProvider');
+    }
+    return context;
+};
+
+function AuthContextProvider({ children }) {
     const [Auth, setAuth] = useState({
         isAuthenticated: false,
         user: null,
         status: 'pending',
     });
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -67,6 +78,9 @@ function AuthContextProvider({children}) {
                 user: userDetails,
                 status: 'done',
             });
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
             console.log("User logged in successfully");
         } catch (error) {
             console.error('Error during login process:', error);
@@ -86,6 +100,7 @@ function AuthContextProvider({children}) {
             user: null,
             status: 'done',
         });
+        navigate('/');
         console.log("User logged out");
     }
 

@@ -1,11 +1,11 @@
 import './GameJam.css';
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useState} from "react";
 import api from "../../helpers/api.js";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 
 function GameJam() {
-    const {isAuthenticated, user} = useContext(AuthContext);
+    const {isAuthenticated, user} = useAuth();
     const navigate = useNavigate();
     const [gameJams, setGameJams] = useState([]);
     const [loading, setLoading] = useState(true);

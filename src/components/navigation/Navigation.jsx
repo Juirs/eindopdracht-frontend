@@ -1,5 +1,5 @@
-import {useContext, useState} from "react";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useState} from "react";
+import {useAuth} from "../../context/AuthContext.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
 import userAvatar from '../../assets/user-placeholder.png';
@@ -7,7 +7,7 @@ import api from "../../helpers/api.js";
 import './Navigation.css';
 
 function Navigation() {
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
 

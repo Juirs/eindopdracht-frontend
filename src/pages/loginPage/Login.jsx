@@ -1,18 +1,18 @@
-import {useContext, useState} from "react";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useState} from "react";
+import {useAuth} from "../../context/AuthContext.jsx";
 import api from "../../helpers/api.js";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import './Login.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
+import {getErrorMessage} from "../../helpers/errorUtils.js";
 
 function Login() {
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     async function handleLogin(event) {
         event.preventDefault();
@@ -24,12 +24,9 @@ function Login() {
             const response = await api.auth.login(username, password);
             auth.login(response);
             setMessage('Login successful! Redirecting...');
-            setTimeout(() => {
-                navigate('/');
-            }, 2000);
         } catch (e) {
             console.error("Error during signing in:", e);
-            setError('Login failed. Please check your username and password.');
+            setError(getErrorMessage(e, 'Login failed. Please check your username and password.'));
         } finally {
             setIsLoading(false);
         }

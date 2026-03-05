@@ -3,6 +3,7 @@ import api from "../../helpers/api.js";
 import {Link, useNavigate} from "react-router-dom";
 import './PasswordReset.css';
 import logo from '../../assets/indieVerse_Logo_Transparent.png';
+import {getErrorMessage} from "../../helpers/errorUtils.js";
 
 function PasswordReset() {
     const [username, setUsername] = useState('');
@@ -26,7 +27,7 @@ function PasswordReset() {
             }, 2000);
         } catch (e) {
             console.error("Error during password change:", e);
-            setError("An error occurred while changing your password. Please try again.");
+            setError(getErrorMessage(e, "An error occurred while changing your password. Please try again."));
         } finally {
             setIsLoading(false);
         }

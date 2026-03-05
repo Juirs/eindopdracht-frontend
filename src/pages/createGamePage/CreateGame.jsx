@@ -1,12 +1,14 @@
 import './CreateGame.css';
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import api from "../../helpers/api.js";
 import {getAllCategories, getCategoryDisplayName} from "../../helpers/categoryHelpers.js";
-import {AuthContext} from "../../context/AuthContext.jsx";
+import {useAuth} from "../../context/AuthContext.jsx";
+
+import {getErrorMessage} from "../../helpers/errorUtils.js";
 
 function CreateGame() {
-    const {user, isAuthenticated} = useContext(AuthContext);
+    const {user, isAuthenticated} = useAuth();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -145,7 +147,7 @@ function CreateGame() {
             navigate(`/games/${response.id}`);
         } catch (err) {
             console.error('Error creating game:', err);
-            setError(err.response?.data || 'Failed to create game. Please try again.');
+            setError(getErrorMessage(err, 'Failed to create game. Please try again.'));
         } finally {
             setLoading(false);
         }
